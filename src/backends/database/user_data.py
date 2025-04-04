@@ -6,8 +6,9 @@ import bcrypt
 from bson import ObjectId
 from pymongo import ReturnDocument
 
-from database.conn import db  # Ensure this import points to your connection file
-
+from database.conn import db 
+from audit_logs_data import log_audit
+ 
 users_collection = db["users"]
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -47,7 +48,8 @@ async def create_user(user: UserCreate):
         "created_at": datetime.now(timezone.utc)
     }
     result = await users_collection.insert_one(user_doc)
-    user_doc["id"] = str(result.inserted_id)  # Convert ObjectId to string
+    user_doc["id"] = str(result.inserted_id) 
+    await log_audit(user_id=str(result.inserted_id), action="User created", metadata={"email": user.email})
     return user_doc
 
 @router.get("/", response_model=List[UserResponse])
