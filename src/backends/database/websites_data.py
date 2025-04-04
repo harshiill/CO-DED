@@ -4,6 +4,7 @@ from typing import List, Optional
 from datetime import datetime, timezone
 from bson import ObjectId
 from database.conn import db
+from audit_logs_data import log_audit  # 🔥 Import the audit logger
 
 websites_collection = db["websites"]
 
@@ -41,6 +42,14 @@ async def create_website(website: WebsiteCreate):
     result = await websites_collection.insert_one(website_doc)
     website_doc["id"] = str(result.inserted_id)
     website_doc["owner_id"] = str(website_doc["owner_id"])
+
+    # 📘 Log audit for creation
+    await log_audit(
+        user_id=website.owner_id,
+        action="create_website",
+        metadata=website_doc
+    )
+
     return website_doc
 
 @router.get("/", response_model=List[WebsiteResponse])
@@ -71,17 +80,37 @@ async def update_website(website_id: str, website_update: WebsiteUpdate):
     updated = await websites_collection.find_one_and_update(
         {"_id": ObjectId(website_id)},
         {"$set": update_data},
-        return_document = True  
+        return_document=True  
     )
     if not updated:
         raise HTTPException(status_code=404, detail="Website not found")
     updated["id"] = str(updated["_id"])
     updated["owner_id"] = str(updated["owner_id"])
+
+    # 📘 Log audit for update
+    await log_audit(
+        user_id=updated["owner_id"],
+        action="update_website",
+        metadata={"updated_fields": update_data, "website_id": website_id}
+    )
+
     return updated
 
 @router.delete("/{website_id}")
 async def delete_website(website_id: str):
+    website = await websites_collection.find_one({"_id": ObjectId(website_id)})
+    if not website:
+        raise HTTPException(status_code=404, detail="Website not found")
+
     result = await websites_collection.delete_one({"_id": ObjectId(website_id)})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Website not found")
+
+    # 📘 Log audit for deletion
+    await log_audit(
+        user_id=str(website["owner_id"]),
+        action="delete_website",
+        metadata={"deleted_id": website_id, "url": website["url"]}
+    )
+
     return {"message": "Website deleted successfully"}
