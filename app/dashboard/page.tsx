@@ -15,12 +15,27 @@ export default function Dashboard() {
   const router = useRouter();
 
   const messages = [
-    'Thinking hard...',
-    'Analyzing your website...',
-    'Optimizing your content...',
-    'Generating SEO Insights...',
-    'Almost done...',
-    'Crafting smart solutions...',
+    'OOur AI is thinking...',
+    'PPlease wait...',
+    'AAnalyzing your content...',
+    'CCrunching data...',
+    'AAlmost there...',
+    'PProcessing your request...',
+    'GGenerating insights...',
+    'SScanning for patterns...',
+    'RRefining the output...',
+    'LLoading smart responses...',
+    'EExamining possibilities...',
+    'CCalculating probabilities...',
+    'FFormulating a response...',
+    'DDigging into data...',
+    'VValidating information...',
+    'SSearching for accuracy...',
+    'CCompiling relevant details...',
+    'AAssessing the best outcome...',
+    'IInterpreting your input...',
+    'MMaking sense of the data...',
+    'UUnderstanding the context...'
   ];
   const [messageIndex, setMessageIndex] = useState(0);
   const [typedText, setTypedText] = useState('');
