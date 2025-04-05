@@ -3,8 +3,9 @@ from pydantic import BaseModel, Field
 from typing import List, Optional
 from datetime import datetime, timezone
 from bson import ObjectId
+
 from database.conn import db
-from audit_logs_data import log_audit  # 🔥 Import the audit logger
+from .audit_logs_data import log_audit  
 
 websites_collection = db["websites"]
 
