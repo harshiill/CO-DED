@@ -27,25 +27,7 @@ export default function RootLayout({
       <AnalysisProvider>
         <MantineProvider>
          
-          <NavbarMinimal 
-            sx={(theme) => ({
-              backgroundColor: theme.colors.indigo[6],
-              padding: theme.spacing.md,
-              borderRadius: theme.radius.md,
-            })}
-          >
-            <Navbar.Section component={Link} href="#" variant="subtle">
-              <Navbar.Divider />
-              <Group position="apart">
-                <Text weight={500} size="lg">
-                  Create Next App
-                </Text>
-                <ActionIcon>
-                  <IconSettings size={18} />
-                </ActionIcon>
-              </Group>
-            </Navbar.Section>
-          </NavbarMinimal>
+          <NavbarMinimal />
           <main style={{marginLeft :"220px"}}>
          
             {children}

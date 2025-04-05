@@ -14,11 +14,7 @@
   },
   "dependencies": {
     "@gfazioli/mantine-text-animate": "^1.0.2",
-<<<<<<< HEAD
     "@mantine/code-highlight": "^7.17.2",
-=======
-    "@mantine/code-highlight": "^7.17.3",
->>>>>>> 2a353784ec41e00a6c76965820b0013c5e9f5017
     "@mantine/core": "^7.17.2",
     "@mantine/form": "^7.17.2",
     "@mantine/hooks": "^7.17.2",
