@@ -7,7 +7,7 @@ from bson import ObjectId
 from pymongo import ReturnDocument
 
 from database.conn import db 
-from audit_logs_data import log_audit
+from .audit_logs_data import log_audit
  
 users_collection = db["users"]
 
@@ -16,8 +16,8 @@ router = APIRouter(prefix="/users", tags=["Users"])
 class UserCreate(BaseModel):
     name: str = Field(..., min_length=3)
     email: EmailStr
-    password: str  # This will be hashed before storing
-    role: str = Field(..., pattern="^(admin|user)$")  # Use pattern, not regex
+    password: str 
+    role: str = Field(..., pattern="^(admin|user)$") 
 
 class UserResponse(BaseModel):
     id: str
@@ -28,7 +28,7 @@ class UserResponse(BaseModel):
 
 class UserUpdate(BaseModel):
     name: Optional[str]
-    role: Optional[str] = Field(None, pattern="^(admin|user)$")  # Changed regex to pattern
+    role: Optional[str] = Field(None, pattern="^(admin|user)$")  
 
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")

@@ -12,35 +12,41 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from uvicorn import Config, Server
 
-# Import scripts from your existing project
 from scripts.scraper import scrape_website
 from scripts.llm_utils import vec_store, retrieval
 from scripts.content_update import process_update
 from scripts.error_link import process_links
 from scripts.seo import analyze_seo, get_keyword_suggestions, optimize_metadata
-from inference import infer_text_api  # Ensure this module is correctly imported
+from inference import infer_text_api  
+
+from database.user_data import router as users_router
+from database.api_keys_data import router as api_keys_router
+from database.websites_data import router as websites_router
+from database.audit_logs_data import router as log_audit_router
 
 PORT_API = 8008
 CACHE_FILE = "scraped_cache.json"
 CACHE_EXPIRY_HOURS = 1
 
-server_instance = None  # Global reference to the Uvicorn server instance
+server_instance = None  
 
 app = FastAPI(
     title="API Server",
     version="0.1.0",
 )
 
-# Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "*"],  # Adjust as needed
+    allow_origins=["http://localhost:3000", "*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-### API ENDPOINTS ###
+app.include_router(users_router)
+app.include_router(api_keys_router)
+app.include_router(websites_router)
+app.include_router(log_audit_router)
 
 @app.get("/v1/connect")
 def connect_to_api_server():
@@ -165,10 +171,9 @@ async def clear_cache():
         os.remove(CACHE_FILE)
     return {"message": "Cache cleared successfully"}
 
-### PROGRAMMATIC SERVER START/STOP ###
 
 def kill_process():
-    os.kill(os.getpid(), signal.SIGINT)  # Forcefully stops this script
+    os.kill(os.getpid(), signal.SIGINT)  
 
 def start_api_server(**kwargs):
     global server_instance
@@ -198,7 +203,7 @@ def stdin_loop():
 def start_input_thread():
     try:
         input_thread = threading.Thread(target=stdin_loop)
-        input_thread.daemon = True  # So it exits when the main program exits
+        input_thread.daemon = True  
         input_thread.start()
     except:
         print("[sidecar] Failed to start input handler.", flush=True)

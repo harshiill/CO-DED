@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from bson import ObjectId
 
 from database.conn import db  
-from audit_logs_data import log_audit
+from .audit_logs_data import log_audit
 
 api_keys_collection = db["api_keys"]
 
@@ -50,7 +50,6 @@ async def create_api_key(api_key_data: APIKeyCreate):
     if "owner_id" in document:
         document["owner_id"] = str(document["owner_id"])
 
-    # Audit log
     await log_audit(
         user_id=document.get("owner_id"),
         action="create_api_key",
@@ -80,7 +79,7 @@ async def get_api_key(key_id: str):
 
 @router.put("/{key_id}", response_model=APIKeyResponse)
 async def update_api_key(key_id: str, update_data: APIKeyUpdate):
-    update_dict = {k: v for k, v in update_data.dict(exclude_unset=True).items()}
+    update_dict = {k: v for k, v in update_data.model_dump(exclude_unset=True).items()}
     if "owner_id" in update_dict and update_dict["owner_id"]:
         update_dict["owner_id"] = ObjectId(update_dict["owner_id"])
     if not update_dict:
@@ -97,7 +96,6 @@ async def update_api_key(key_id: str, update_data: APIKeyUpdate):
     if "owner_id" in updated:
         updated["owner_id"] = str(updated["owner_id"])
 
-    # Audit log
     await log_audit(
         user_id=updated.get("owner_id"),
         action="update_api_key",
@@ -115,7 +113,6 @@ async def delete_api_key(key_id: str):
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="API Key not found")
 
-    # Audit log
     await log_audit(
         user_id=str(key.get("owner_id")),
         action="delete_api_key",
