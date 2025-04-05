@@ -27,11 +27,12 @@ export function HeroTitle() {
       justifyContent: 'center',
       alignItems:'center',
       padding: '100px 20px',
+      
       minHeight: '100vh',
       width:'100vw'
       
     }}>
-      <div style={{ textAlign: 'center', maxWidth: '800px' }}>
+      <div style={{ textAlign: 'center', maxWidth: '800px', paddingRight: '20px' }}>
         
         <h1 style={{
           fontSize: '3rem',
