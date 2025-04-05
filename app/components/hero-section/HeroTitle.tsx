@@ -1,6 +1,7 @@
 import { Button, Text, Group } from '@mantine/core';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { TextAnimate } from '@gfazioli/mantine-text-animate';
 
 const texts = [
   'Check Broken Links',
@@ -20,31 +21,33 @@ export function HeroTitle() {
   }, []);
 
   return (
-    <>
-    <div style={{backgroundColor: '#1A1B1E', alignContent: 'center', display: 'flex', justifyContent: 'center', marginTop: '70px' }}>
-    <div style={{backgroundColor:'#1A1B1E' , height:'400px'}}></div>
-    <div style={{ padding: '40px 0',minHeight: '100vh',
-      backgroundColor: '#1A1B1E', alignContent: 'center', display: 'flex', justifyContent: 'center', marginTop: '400px' }}>
-      {/* Centered container for text and button only */}
-      <div
-        style={{
-          marginLeft: '100px',   // Adjust these if needed
-          marginRight: '250px',  // for your sidebar or layout
-          textAlign: 'center',
-        }}
-      >
-        <h1
-          style={{
-            fontSize: '3rem',
-            fontWeight: 800,
-            marginBottom: '10px',
-            color: '#fff',
-          }}
-        >
+    <div style={{
+      backgroundColor: '#0F172A',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems:'center',
+      padding: '100px 20px',
+      minHeight: '100vh',
+      width:'100vw'
+      
+    }}>
+      <div style={{ textAlign: 'center', maxWidth: '800px' }}>
+        
+        <h1 style={{
+          fontSize: '3rem',
+          fontWeight: 800,
+          marginBottom: '10px',
+          color: '#fff',
+          fontFamily: 'Merriweather, sans-serif',
+        }}>
           Your{' '}
-          <Text component="span" inherit style={{ color: '#00FFFF' }}>
+          <span style={{
+            background: 'linear-gradient(90deg, #4ADE80 0%, #22D3EE 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent'
+          }}>
             one-stop solution
-          </Text>{' '}
+          </span>{' '}
           to
         </h1>
 
@@ -52,47 +55,37 @@ export function HeroTitle() {
           key={texts[index]}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.5 }}
           style={{
             fontSize: '2.3rem',
             fontWeight: 700,
-            color: '#FFFFFF',
+            color: '#fff',
             marginBottom: '15px',
           }}
         >
           {texts[index]}
         </motion.h2>
 
-        <Text
-          style={{
-            fontSize: '1.3rem',
-            fontWeight: 500,
-            lineHeight: '1.8',
-            margin: '0 auto',
-            padding: '1rem',
-            color: '#ccc',
-          }}
-        >
-          Supercharge your website's SEO – analyze, detect broken links, and optimize performance with our cutting-edge tools!
-        </Text>
+        <TextAnimate.Typewriter style={{
+          fontSize: '1.6rem',
+          lineHeight: '2.2rem',
+          color: '#94A3B8',
+          padding: '1rem',
+          fontFamily: 'Merriweather, sans-serif',
+        }} value="Supercharge your website's SEO – analyze, detect broken links, and optimize performance with our cutting-edge tools!" animate />
 
-        <Group
-          style={{
-            marginTop: '30px',
-            gap: '15px',
-            justifyContent: 'center',
-          }}
-        >
+        <Group style={{ marginTop: '30px', justifyContent: 'center', gap: '15px' }}>
           <Button
             size="lg"
             variant="filled"
             style={{
-              backgroundColor: '#00FFFF',
-              color: '#000',
+              backgroundColor: '#4ADE80',
+              color: '#0F172A',
               padding: '12px 24px',
               fontSize: '1rem',
               fontWeight: 600,
+              borderRadius: '8px',
+              transition: 'background-color 0.3s ease',
             }}
           >
             Get Started
@@ -100,7 +93,5 @@ export function HeroTitle() {
         </Group>
       </div>
     </div>
-    </div>
-    </>
   );
 }
