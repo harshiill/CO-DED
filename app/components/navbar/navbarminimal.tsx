@@ -20,7 +20,6 @@ const data = [
   { link: '/updatecontent', label: 'Content Update', icon: IconEdit },
   { link: '/content_add', label: 'Content Add', icon: IconDatabasePlus },
   { link: '/broken_links', label: 'Broken Link Provider', icon: IconDatabasePlus },
-  { link: '/fetch_pr', label: 'PR Creator', icon: IconEdit },
 ];
 
 export function NavbarMinimal() {
@@ -34,8 +33,8 @@ export function NavbarMinimal() {
       href={item.link}
       className={`${classes.link} ${pathname === item.link ? classes.active : ''}`}
     >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
+      <item.icon className={classes.linkIcon} stroke={1.5} size={20} />
+      <span className={classes.linkLabel}>{item.label}</span>
     </Link>
   ));
 
@@ -43,12 +42,12 @@ export function NavbarMinimal() {
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
         <Group className={classes.header} justify="space-between">
-          <Code fw={700}>v3.1.2</Code>
+          <Code fw={700} className={classes.version}>v3.1.2</Code>
+          <ActionToggle className={classes.toggle} />
         </Group>
-        {links}
-      </div>
-      <div>
-        <ActionToggle />
+        <ul className={classes.linkList}>
+          {links}
+        </ul>
       </div>
     </nav>
   );
