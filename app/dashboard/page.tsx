@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { Container, Card, TextInput, Button, Stack, Title, Text, Paper, Loader, Center } from '@mantine/core';
+import { Container, Card, TextInput, Button, Stack, Title, Text, Paper } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import { useAnalysis } from '../contexts/Analysiscontext';
 import { useRouter } from 'next/navigation';
@@ -8,12 +8,13 @@ import { updateContent, addContent, getErrorLinks, analyzeSEO, setupAider } from
 
 export default function Dashboard() {
   const [urlInput, setUrlInput] = useState('');
-  const [workingDir, setWorkingDir] = useState('');
+  const [workingDir, setWorkingDir] = useState(''); // state for working directory
   const [loading, setLoading] = useState(false);
   const [setupResult, setSetupResult] = useState(null);
   const { setUrl, setAnalysisData } = useAnalysis();
   const router = useRouter();
 
+  // Typewriter effect states and messages (unchanged)
   const messages = [
     'OOur AI is thinking...',
     'PPlease wait...',
@@ -41,112 +42,152 @@ export default function Dashboard() {
   const [typedText, setTypedText] = useState('');
 
   useEffect(() => {
-    let cycle;
+    let cycleInterval;
     if (loading) {
-      cycle = setInterval(() => {
+      cycleInterval = setInterval(() => {
         setMessageIndex((prev) => (prev + 1) % messages.length);
-      }, 4000);
+      }, 5000);
+    } else {
+      setMessageIndex(0);
     }
-    return () => clearInterval(cycle);
+    return () => {
+      if (cycleInterval) clearInterval(cycleInterval);
+    };
   }, [loading]);
 
   useEffect(() => {
     if (loading) {
-      const msg = messages[messageIndex];
+      const fullMessage = messages[messageIndex];
       setTypedText('');
-      let i = 0;
-      const typer = setInterval(() => {
-        setTypedText((prev) => prev + msg.charAt(i));
-        i++;
-        if (i === msg.length) clearInterval(typer);
-      }, 80);
-      return () => clearInterval(typer);
+      let charIndex = 0;
+      const typingInterval = setInterval(() => {
+        setTypedText((prev) => prev + fullMessage.charAt(charIndex));
+        charIndex++;
+        if (charIndex === fullMessage.length) {
+          clearInterval(typingInterval);
+        }
+      }, 100);
+      return () => clearInterval(typingInterval);
     }
   }, [messageIndex, loading]);
 
   const handleSubmit = async () => {
-    if (!urlInput || !workingDir) return;
+    if (!urlInput || !workingDir) return; // Ensure both inputs are provided
     setLoading(true);
-    setUrl(urlInput.trim());
-
+    const trimmedUrl = urlInput.trim();
+    // Save URL in context
+    setUrl(trimmedUrl);
     try {
+      // Call the setupAider endpoint with the working directory
       const aiderRes = await setupAider(workingDir);
+      console.log('Aider setup response:', aiderRes);
       setSetupResult(aiderRes.stdout || aiderRes.error);
 
+      // Optionally, continue with other API calls concurrently
       const [updateRes, addRes, errorRes, seoRes] = await Promise.all([
-        updateContent(urlInput.trim()),
-        addContent(urlInput.trim()),
-        getErrorLinks(urlInput.trim()),
-        analyzeSEO(urlInput.trim())
+        updateContent(trimmedUrl),
+        addContent(trimmedUrl),
+        getErrorLinks(trimmedUrl),
+        analyzeSEO(trimmedUrl)
       ]);
-
+      // Store the responses in context
       setAnalysisData({
         update: updateRes,
         add: addRes,
         errorLinks: errorRes,
         seo: seoRes,
-        workingDir,
+        workingDir
       });
-
+      // Navigate to a results page (for example, /updatecontent)
       router.push('/updatecontent');
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Error during analysis:", error);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#0F172A', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
-      <Container size="sm">
-        <Title align="center" style={{ fontSize: '3rem', fontWeight: 800, color: '#fff' }}>
-          Dashboard
-        </Title>
-        <Text align="center" color="dimmed" mb="lg">
-          Enter a website URL & your project working directory to analyze.
-        </Text>
-
-        <Card shadow="xl" padding="xl" radius="lg" style={{ backgroundColor: '#1E293B', color: '#fff' }}>
-          <Stack gap="lg">
-            <TextInput
-              placeholder="Enter Website URL"
-              value={urlInput}
-              onChange={(e) => setUrlInput(e.target.value)}
-              radius="md"
-              size="md"
-              rightSection={<IconSearch size={16} />}
-            />
-            <TextInput
-              placeholder="Enter Working Directory"
-              value={workingDir}
-              onChange={(e) => setWorkingDir(e.target.value)}
-              radius="md"
-              size="md"
-            />
-            <Button fullWidth radius="md" size="md" onClick={handleSubmit}>
-              Start Analysis
-            </Button>
-          </Stack>
+    <Container size="md" pt={40}>
+      <Title order={1} align="center" style={{ fontSize: '4rem', fontWeight: 700 }}>
+        Dashboard
+      </Title>
+      <Text align="center" color="dimmed" mt={10}>
+        Enter a website URL to analyze and specify your project working directory.
+      </Text>
+      <Card
+        shadow="xl"
+        padding="xl"
+        withBorder
+        style={{
+          width: '100%',
+          maxWidth: 600,
+          borderRadius: 12,
+          margin: '40px auto'
+        }}
+      >
+        <Stack gap={24}>
+          <TextInput
+            placeholder="Enter website URL"
+            rightSection={<IconSearch size={16} />}
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
+            radius="md"
+            size="md"
+          />
+          <TextInput
+            placeholder="Enter project working directory"
+            label="Project Working Directory"
+            value={workingDir}
+            onChange={(e) => setWorkingDir(e.target.value)}
+            radius="md"
+            size="md"
+          />
+          <Button onClick={handleSubmit} fullWidth radius="md">
+            Setup Aider and Analyze URL
+          </Button>
+        </Stack>
+      </Card>
+      {loading && (
+        <Paper
+          p="xl"
+          shadow="lg"
+          withBorder
+          mt={40}
+          style={{
+            backgroundColor: '#1e1e1e',
+            color: '#d4d4d4',
+            fontFamily: 'monospace',
+            borderRadius: '8px',
+            width: '100%',
+            padding: '20px',
+            minHeight: '200px'
+          }}
+        >
+          <div
+            style={{
+              padding: '10px 20px',
+              borderBottom: '1px solid #333',
+              display: 'flex',
+              gap: '8px',
+              alignItems: 'center'
+            }}
+          >
+            <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#ff5f56' }}></div>
+            <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#ffbd2e' }}></div>
+            <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#27c93f' }}></div>
+            <Text ml="auto" style={{ fontSize: '0.8rem' }}>Terminal</Text>
+          </div>
+          <div style={{ padding: '20px', whiteSpace: 'pre-wrap' }}>
+            {typedText}
+          </div>
+        </Paper>
+      )}
+      {setupResult && (
+        <Card shadow="sm" mt={20} padding="md">
+          <Text>{setupResult}</Text>
         </Card>
-
-        {loading && (
-          <Paper mt="xl" p="lg" radius="md" style={{ backgroundColor: '#1E293B', color: '#cbd5e1' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-              <Text size="sm" color="dimmed">
-                Terminal
-              </Text>
-              <Loader size="xs" color="blue" />
-            </div>
-            <Text style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{typedText}</Text>
-          </Paper>
-        )}
-
-        {setupResult && !loading && (
-          <Paper mt="xl" p="lg" radius="md" style={{ backgroundColor: '#1E293B', color: '#cbd5e1' }}>
-            <Text style={{ fontFamily: 'monospace', whiteSpace: 'pre-wrap' }}>{setupResult}</Text>
-          </Paper>
-        )}
-      </Container>
-    </div>
+      )}
+    </Container>
   );
 }
