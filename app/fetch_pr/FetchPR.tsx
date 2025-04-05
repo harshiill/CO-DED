@@ -1,26 +1,81 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Github } from "lucide-react"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Github } from "lucide-react";
 
 export default function Home() {
-  // Replace this URL with your actual GitHub repository URL
-  const githubPrUrl = "https://github.com/yourusername/yourrepository/compare"
+  const githubPrUrl = "https://github.com/yourusername/yourrepository/compare";
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-gray-50">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center">GitHub PR Creator</h1>
-        <p className="text-gray-500 text-center">Click the button below to create a new Pull Request</p>
-        <div className="flex justify-center">
+    <main
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "1rem",
+        backgroundColor: "#F9FAFB",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "400px",
+          padding: "2rem",
+          backgroundColor: "#fff",
+          borderRadius: "8px",
+          boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+        }}
+      >
+        <h1
+          style={{
+            fontSize: "1.8rem",
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: "1rem",
+          }}
+        >
+          GitHub PR Creator
+        </h1>
+        <p
+          style={{
+            color: "#6B7280",
+            textAlign: "center",
+            marginBottom: "1.5rem",
+          }}
+        >
+          Click the button below to create a new Pull Request
+        </p>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <Link href={githubPrUrl} target="_blank" rel="noopener noreferrer">
-            <Button size="lg" className="gap-2">
-              <Github className="h-5 w-5" />
+            <Button
+              size="lg"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                backgroundColor: "#0F172A",
+                color: "#fff",
+                padding: "12px 24px",
+                borderRadius: "6px",
+                fontSize: "1rem",
+                fontWeight: "600",
+                cursor: "pointer",
+                transition: "background-color 0.3s ease",
+              }}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.backgroundColor = "#1E293B")
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.backgroundColor = "#0F172A")
+              }
+            >
+              <Github style={{ width: "20px", height: "20px" }} />
               Need a PR
             </Button>
           </Link>
         </div>
       </div>
     </main>
-  )
+  );
 }
-
