@@ -20,6 +20,7 @@ const data = [
   { link: '/updatecontent', label: 'Content Update', icon: IconEdit },
   { link: '/content_add', label: 'Content Add', icon: IconDatabasePlus },
   { link: '/broken_links', label: 'Broken Link Provider', icon: IconDatabasePlus },
+  { link: '/fetch_pr', label: 'PR Creator', icon: IconEdit },
 ];
 
 export function NavbarMinimal() {
