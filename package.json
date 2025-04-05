@@ -1,0 +1,46 @@
+{
+  "name": "agentx",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev-reqs": "pip3 install -r requirements.txt",
+    "dev": "next dev",
+    "build:python": "pyinstaller --onefile -c -F --clean --name main-x86_64-pc-windows-msvc --distpath src-tauri/bin/api src/backends/main.py",
+    "build": "npm run build:python && next build",
+    "tauri": "tauri",
+    "export": "next export",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@mantine/code-highlight": "^7.17.2",
+    "@mantine/core": "^7.17.2",
+    "@mantine/form": "^7.17.2",
+    "@mantine/hooks": "^7.17.2",
+    "@mantine/nprogress": "^7.17.2",
+    "@mantine/prism": "6.0.22",
+    "@tabler/icons-react": "^3.12.0",
+    "@tauri-apps/api": "^1.4.0",
+    "@types/node": "20.2.4",
+    "@types/react": "18.2.7",
+    "@types/react-dom": "18.2.4",
+    "autoprefixer": "10.4.14",
+    "concurrently": "^8.0.1",
+    "cors": "^2.8.5",
+    "eslint": "8.41.0",
+    "eslint-config-next": "13.4.4",
+    "framer-motion": "^12.5.0",
+    "next": "13.4.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-typed": "^2.0.12",
+    "typed.js": "^2.1.0"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.4.0",
+    "@types/cors": "^2.8.13",
+    "postcss": "8.4.23",
+    "postcss-preset-mantine": "^1.17.0",
+    "postcss-simple-vars": "^7.0.1"
+  }
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "section_1",
+    "content": "Ford Motor Company is headquartered in Dearborn, Michigan...",
+    "links": [
+      { "href": "/wiki/Dearborn,_Michigan", "content": "Dearborn, Michigan" },
+      { "href": "/wiki/Automotive_industry", "content": "Automotive industry" }
+    ]
+  },
+  {
+    "id": "section_2",
+    "content": "Ford Motor Company is headquartered in India, Mumbai...",
+    "links": [
+      { "href": "/wiki/Dearborn,_Mumbai", "content": "Mumbai, Michigan" },
+      { "href": "/wiki/Automotive_chudstry", "content": "Automotive" }
+    ]
+  }
+]

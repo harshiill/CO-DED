@@ -1,0 +1,60 @@
+.wrapper {
+  position: relative;
+  box-sizing: border-box;
+  width: 100vw;  /* Full width */
+  height: 100vh; /* Full height */
+  display: flex;
+  align-items: center;  /* Vertically center */
+  justify-content: flex-start; /* Align content to the left */
+  padding-left: 10vw;  /* Space from the left edge */
+  background-color: var(--mantine-color-dark-8);
+}
+
+.inner {
+  max-width: 900px; /* Limit content width */
+  width: 100%;
+}
+
+.title {
+  font-family: Greycliff CF, var(--mantine-font-family);
+  font-size: 62px;
+  font-weight: 900;
+  line-height: 1.1;
+  margin: 0;
+  padding: 0;
+  color: var(--mantine-color-white);
+}
+
+.description {
+  margin-top: var(--mantine-spacing-xl);
+  font-size: 24px;
+  max-width: 600px;
+}
+
+.controls {
+  margin-top: calc(var(--mantine-spacing-xl) * 2);
+}
+
+.control {
+  height: 54px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    padding-left: 5vw; /* Reduce left padding on smaller screens */
+  }
+  .title {
+    font-size: 42px;
+    line-height: 1.2;
+  }
+  .description {
+    font-size: 18px;
+  }
+  .control {
+    flex: 1;
+    padding: 12px 18px;
+  }
+}

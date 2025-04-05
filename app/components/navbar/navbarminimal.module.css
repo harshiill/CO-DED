@@ -1,0 +1,95 @@
+
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 220px;
+  padding: var(--mantine-spacing-md);
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #f0f4ff, #ffffff);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: background-color 0.3s;
+}
+  
+.navbarMain {
+  flex: 1;
+  margin-bottom: var(--mantine-spacing-md);
+}
+  
+.header {
+  padding-bottom: var(--mantine-spacing-md);
+  margin-bottom: calc(var(--mantine-spacing-md) * 1.5);
+  border-bottom: 1px solid #e0e0e0;
+}
+  
+.footer {
+  padding-top: var(--mantine-spacing-md);
+  margin-top: var(--mantine-spacing-md);
+  border-top: 1px solid #e0e0e0;
+}
+  
+.link {
+  display: flex;
+  align-items: center;
+  font-size: var(--mantine-font-size-sm);
+  padding: 10px 16px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #333;
+  transition: background-color 0.2s, transform 0.2s;
+}
+  
+.link:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+  transform: translateX(4px);
+}
+  
+.linkIcon {
+  margin-right: var(--mantine-spacing-sm);
+  width: 24px;
+  height: 24px;
+  color: #777;
+}
+  
+.active {
+  background-color: rgba(0, 123, 255, 0.2);
+  outline: 2px solid rgba(0, 123, 255, 0.5);
+  transform: translateX(4px);
+}
+
+/* Dark mode overrides */
+:root[data-mantine-color-scheme="dark"] .navbar {
+  background: linear-gradient(135deg, #2b2b2b, #1a1a1a);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-mantine-color-scheme="dark"] .header {
+  border-bottom: 1px solid #444;
+}
+
+:root[data-mantine-color-scheme="dark"] .footer {
+  border-top: 1px solid #444;
+}
+
+:root[data-mantine-color-scheme="dark"] .link {
+  color: #ddd;
+}
+
+:root[data-mantine-color-scheme="dark"] .link:hover {
+  background-color: rgba(0, 123, 255, 0.2);
+}
+
+:root[data-mantine-color-scheme="dark"] .active {
+  background-color: rgba(0, 123, 255, 0.3);
+  outline: 2px solid rgba(0, 123, 255, 0.7);
+}
+
+:root[data-mantine-color-scheme="dark"] .linkIcon {
+  color: #aaa;
+}
