@@ -46,7 +46,17 @@ export function NavbarMinimal() {
           <ActionToggle className={classes.toggle} />
         </Group>
         <ul className={classes.linkList}>
-          {links}
+          {links.map((item) => (
+            <li key={item.label}>
+              <Link
+                href={item.link}
+                className={`${classes.link} ${pathname === item.link ? classes.active : ''}`}
+              >
+                <item.icon className={classes.linkIcon} stroke={1.5} size={20} />
+                <span className={classes.linkLabel}>{item.label}</span>
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </nav>
